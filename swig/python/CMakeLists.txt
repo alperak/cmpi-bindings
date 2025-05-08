@@ -59,15 +59,14 @@ execute_process(
   OUTPUT_VARIABLE PYTHON_SITE
   OUTPUT_STRIP_TRAILING_WHITESPACE)            
 
-SET(PYTHON_INSTALL_DIR "${PYTHON_SITE}/site-packages")
-
-MESSAGE(STATUS "Python executable:  ${PYTHON_EXECUTABLE}")
-MESSAGE(STATUS "Python inc dir:     ${PYTHON_INCLUDE_PATH}")
-MESSAGE(STATUS "Python lib dir:     ${PYTHON_LIB_DIR}")
-MESSAGE(STATUS "Python libraries:   ${PYTHON_LIBRARIES}")
-MESSAGE(STATUS "Python ldflags:     ${PYTHON_LDFLAGS}")
-MESSAGE(STATUS "Python site dir:    ${PYTHON_SITE}")
-MESSAGE(STATUS "Python install dir: ${PYTHON_INSTALL_DIR}")
+MESSAGE(STATUS "Python executable:    ${PYTHON_EXECUTABLE}")
+MESSAGE(STATUS "Python inc dir:       ${PYTHON_INCLUDE_PATH}")
+MESSAGE(STATUS "Python lib dir:       ${PYTHON_LIB_DIR}")
+MESSAGE(STATUS "Python libraries:     ${PYTHON_LIBRARIES}")
+MESSAGE(STATUS "Python ldflags:       ${PYTHON_LDFLAGS}")
+MESSAGE(STATUS "Python site dir:      ${PYTHON_SITE}")
+MESSAGE(STATUS "Python site lib dir:  ${PYTHON_SITELIB}")
+MESSAGE(STATUS "Python site arch dir: ${PYTHON_SITEARCH}")
 
 SET( SWIG_OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/cmpi_wrap.c" )
 SET( SWIG_INPUT "${CMAKE_CURRENT_SOURCE_DIR}/../cmpi.i" )
@@ -108,15 +107,15 @@ TARGET_LINK_LIBRARIES( ${NAME} util )
 
 INSTALL(TARGETS ${NAME} LIBRARY DESTINATION ${CMPI_LIBRARY_DIR})
 # .py: swig generated
-INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/cmpi.py DESTINATION ${PYTHON_INSTALL_DIR} )
+INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/cmpi.py DESTINATION ${PYTHON_SITELIB} )
 
 
 #
 # cmpi_pywbem_bindings.py: provider implementation
 #
-INSTALL(FILES cmpi_pywbem_bindings.py DESTINATION ${PYTHON_INSTALL_DIR} )
+INSTALL(FILES cmpi_pywbem_bindings.py DESTINATION ${PYTHON_SITELIB} )
 #INSTALL(FILES Py_UnixProcessProvider.py DESTINATION /usr/lib/pycim )
 
-INSTALL(CODE "EXECUTE_PROCESS(COMMAND ${PYTHON_EXECUTABLE} -c \"from py_compile import compile; compile('\$ENV{DESTDIR}${PYTHON_INSTALL_DIR}/cmpi.py', dfile='${PYTHON_SITE_DIR}/cmpi.py')\")")
+INSTALL(CODE "EXECUTE_PROCESS(COMMAND ${PYTHON_EXECUTABLE} -c \"from py_compile import compile; compile('\$ENV{DESTDIR}${PYTHON_SITELIB}/cmpi.py', dfile='${PYTHON_SITELIB}/cmpi.py')\")")
 
-INSTALL(CODE "EXECUTE_PROCESS(COMMAND ${PYTHON_EXECUTABLE} -c \"from py_compile import compile; compile('\$ENV{DESTDIR}${PYTHON_INSTALL_DIR}/cmpi_pywbem_bindings.py', dfile='${PYTHON_SITE_DIR}/cmpi_pywbem_bindings.py')\")")
+INSTALL(CODE "EXECUTE_PROCESS(COMMAND ${PYTHON_EXECUTABLE} -c \"from py_compile import compile; compile('\$ENV{DESTDIR}${PYTHON_SITELIB}/cmpi_pywbem_bindings.py', dfile='${PYTHON_SITELIB}/cmpi_pywbem_bindings.py')\")")
