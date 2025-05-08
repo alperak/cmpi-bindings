@@ -193,7 +193,7 @@ PyGlobalInitialize(const CMPIBroker* broker, CMPIStatus* st)
 #elsif PY_MINOR_VERSION < 13
   cmpiMainPyThreadState = PyGILState_GetThisThreadState();
   PyEval_ReleaseThread(cmpiMainPyThreadState); 
-#else # 3.13 or later
+#else /* 3.13 or later */
 #endif
   _SBLIM_TRACE(1,("<%d/0x%x> PyGlobalInitialize() succeeded", getpid(), pthread_self())); 
   return 0;
